@@ -8,16 +8,17 @@ import 'swiper/css/pagination';
 
 import './styles.css';
 import { Link } from 'react-router-dom';
+import { assets } from '../../assets/asset';
 
 function CatSlider() {
   // Array of category items
   const categoryItems = [
-    { label: 'Fashion', image: '/public/Fashion.png', link: '/',color:'#7F22FE' },
-    { label: 'Electronics', image: '/public/electronics.png', link: '/',color:'#7F22FE' },
-    { label: 'Wellness', image: '/public/wellness.png', link: '/',color:'#7F22FE' },
-    { label: 'Groceries', image: '/public/groceries.png', link: '/',color:'' },
-    { label: 'Beauty', image: '/public/Beauty.png', link: '/',color:'#7F22FE' },
-    { label: 'Crafts', image: '/public/craft.webp', link: '/',color:'#7F22FE' },
+    { label: 'Fashion', image: assets.fashion, link: '/',color:'#7F22FE' },
+    { label: 'Electronics', image: assets.electronics, link: '/',color:'#7F22FE' },
+    { label: 'Wellness', image: assets.wellness, link: '/',color:'#7F22FE' },
+    { label: 'Groceries', image: assets.groceries, link: '/',color:'#7F22FE' },
+    { label: 'Beauty', image: assets.beauty, link: '/',color:'#7F22FE' },
+    { label: 'Crafts', image: assets.craft, link: '/',color:'#7F22FE' },
   ];
   return (
     <>
@@ -45,7 +46,7 @@ function CatSlider() {
         >
           {categoryItems.map((item, index) => (
             <SwiperSlide key={index} className={`!w-fit bg-[${item.color}] scale-90`}>
-              <Link to={item.link} className="block">
+              <Link to={`/productListing/${item.label}`} className="block">
                 <div className={`item  hover:scale-105 hover:text-white hover:bg-[#7F22FE] p-2 xl:!p-3 h-[80px] w-[80px] md:h-[13vw] md:w-[13vw] xl:h-[14vw] xl:w-[14vw]  rounded-sm flex flex-col items-center justify-center transition-all`}>
                   <img
                     className="w-[36px] h-[36px]  select-none hover:scale-110 transition-all object-cover mb-2"

@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import "./App.css";
 import { Routes, Route, useLocation, Link } from "react-router-dom";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
@@ -29,13 +29,27 @@ import SeeOrders from './components/Seller/SeeOrders.jsx'
 import AddProduct from './components/Seller/AddProduct.jsx'
 import BannnerDetails from "./components/BannnerDetails.jsx";
 import { ToastContainer , toast } from "react-toastify";
+import ProductListingByCate from "./pages/ProductListingByCate.jsx";
 // Create context at top-level
+import Lenis from 'lenis'
+import 'lenis/dist/lenis.css'
+import Preloader from "./components/Loader";
 const MyContext = createContext();
 
 function App() {
   const { isAdmin , isseller } = useAppContext();
   const location = useLocation();
 
+  useEffect(() => {
+    const lenis = new Lenis({
+      autoRaf: true,
+    });
+    
+    // Listen for the scroll event and log the event data
+    lenis.on('scroll', (e) => {
+      console.log(e);
+    });
+  })
   // Hide header/footer on any /admin or /seller route
   const hideHeaderFooter = location.pathname.startsWith("/admin") || location.pathname.startsWith("/seller");
 
@@ -78,6 +92,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/cart" element={<Cart/>}/>
           <Route path="/productListing" element={<ProductListing />} />
+          <Route path="/productListing/:category" element={<ProductListingByCate />} />
           <Route path="/productDetails" element={<ProductDetails />} />
           <Route path="/help-center" element={<HelpCenter />} />
           <Route path="/Order-tracking" element={<MyOrders/>}/>

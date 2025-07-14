@@ -11,9 +11,12 @@ import { Link } from 'react-router-dom';
 import ProductItem from './ProductItem';
 
 const ProductSlider = (props) => {
+  const { productsByCategory = [] } = props;
+  // If you want to support a generic 'products' prop, you can do:
+  // const products = props.products || props.productsByCategory || [];
   return (
     <>
-      <div className="productSlider  h-[50vh] select-none pt-6 sm:pt-10">
+      <div className="productSlider  h-[50vh] select-none pt-6 xl:pt-10">
         <Swiper
           // Responsive breakpoints for slidesPerView
           breakpoints={{
@@ -26,30 +29,17 @@ const ProductSlider = (props) => {
           modules={[Pagination, Navigation]}
           className="productSlider "
         >
-          <SwiperSlide>
-            <ProductItem />
-          </SwiperSlide>
-          <SwiperSlide>
-            <ProductItem />
-          </SwiperSlide>
-          <SwiperSlide>
-            <ProductItem />
-          </SwiperSlide>
-          <SwiperSlide>
-            <ProductItem />
-          </SwiperSlide>
-          <SwiperSlide>
-            <ProductItem />
-          </SwiperSlide>
-          <SwiperSlide>
-            <ProductItem />
-          </SwiperSlide>
-          <SwiperSlide>
-            <ProductItem />
-          </SwiperSlide>
-          <SwiperSlide>
-            <ProductItem />
-          </SwiperSlide>
+          {productsByCategory && productsByCategory.length > 0 ? (
+            productsByCategory.map((product, idx) => (
+              <SwiperSlide key={product._id || idx}>
+                <ProductItem product={product} />
+              </SwiperSlide>
+            ))
+          ) : (
+            <SwiperSlide>
+              <div>No products available</div>
+            </SwiperSlide>
+          )}
         </Swiper>
       </div>
     </>

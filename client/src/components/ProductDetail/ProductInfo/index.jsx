@@ -1,41 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Stack from '@mui/material/Stack';
 import Rating from '@mui/material/Rating';
 
-const staticProduct = {
-  name: "Casual Shoes",
-  category: "Sports",
-  price: 100,
-  offerPrice: 80,
-  rating: 4,
-  images: [
-    "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/card/productImage.png",
-    "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/card/productImage2.png",
-    "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/card/productImage3.png",
-    "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/card/productImage4.png",
-  ],
-  description: [
-    "High-quality material",
-    "Comfortable for everyday use",
-    "Available in different sizes",
-  ],
-};
 
-const ProductInfo = ({ padding = "" }) => {
-  const product = staticProduct;
-  const [thumbnail, setThumbnail] = useState(product.images[0]);
+const ProductInfo = ({ padding="", product }) => {
+  
+    if (!product || !product.image) {
+    return <div className="text-black p-4">Product not found</div>;
+  }
+
+  const [thumbnail, setThumbnail] = useState(product.image[0]);
+
+  // FIX: Reset thumbnail when product changes
+  useEffect(() => {
+    setThumbnail(product.image[0]);
+  }, [product.image]);
 
   return (
-    <div className={`flex !select-none  !rounded-md !shadow-md flex-col md:flex-row gap-8 md:gap-16 xl:gap-16 ${padding}`}>
+    <div className={`flex  text-black !select-none  !rounded-md !shadow-md flex-col md:flex-row gap-8 md:gap-16 xl:gap-16 ${padding}`}>
       {/* Images Section */}
-      <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+      <div className="flex  text-black flex-col md:flex-row gap-3 w-full md:w-auto">
         <div className="flex flex-row sm:flex-col gap-3 order-2 sm:order-1 justify-center sm:justify-start">
-          {product.images.map((image, index) => (
+          {product.image.map((image, index) => (
             <div
               key={index}
               onClick={() => setThumbnail(image)}
               className={`border  rounded overflow-hidden cursor-pointer w-16 h-16 sm:w-20 sm:h-20 md:w-[70px] md:h-[70px] flex items-center justify-center ${
-                thumbnail === image ? "ring-2 ring-indigo-500" : ""
+                thumbnail === image ? "" : ""
               }`}
             >
               <img
@@ -53,7 +44,7 @@ const ProductInfo = ({ padding = "" }) => {
       </div>
 
       {/* Info Section */}
-      <div className="text-lg w-full !bg-[#27272A] md:w-1/2 flex flex-col gap-5">
+      <div className="text-lg w-full  md:w-1/2 flex flex-col gap-5">
         <div className="flex mb-4 items-center gap-0.5 mt-1">
           <Stack spacing={1}>
             <Rating
@@ -64,21 +55,19 @@ const ProductInfo = ({ padding = "" }) => {
             />
           </Stack>
         </div>
-        <h1 className="text-2xl sm:text-4xl md:text-6xl font-medium">{product.name}</h1>
+        <h1 className="text-2xl sm:text-4xl md:text-6xl font-medium capitalize">{product.product_name}</h1>
         <div className="mt-4 sm:mt-6 px-2 sm:px-4">
           <p className="text-gray-500/70 line-through text-base sm:text-lg">
-            MRP: ${product.price}
+            MRP: ₹{product.price}
           </p>
           <p className="text-xl sm:text-2xl md:text-3xl font-medium">
-            MRP: <span className="text-red-400">${product.offerPrice} </span>
+            MRP: <span className="text-red-400">₹{product.offerPrice} </span>
           </p>
           <span className="text-gray-500/70 text-xs sm:text-base">(inclusive of all taxes)</span>
         </div>
         <p className="text-base sm:text-lg font-medium mt-4 sm:mt-6 px-2 sm:px-4">About Product</p>
         <ul className="list-disc ml-6 text-gray-500/70 px-2 sm:px-4 text-sm sm:text-base">
-          {product.description.map((desc, index) => (
-            <li key={index}>{desc}</li>
-          ))}
+          {product.description}
         </ul>
         <div className="flex flex-col mt-8 sm:mt-10 items-center gap-3 sm:gap-4 text-base">
           <button className="w-full py-3 sm:py-4 rounded-md cursor-pointer font-medium bg-blue-500 text-white hover:bg-indigo-600 transition">
